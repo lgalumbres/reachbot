@@ -3,6 +3,7 @@ var cmds = [".google", ".scores", ".ud"]
 var bodyParser = require("body-parser");
 var express = require("express");
 var logfmt = require("logfmt");
+var $ = require('jquery');
 var app = express();
 
 app.use(logfmt.requestLogger());
@@ -15,8 +16,9 @@ app.get('/', function(req, res) {
 
 // Handle POST request
 app.post('/receiver', function(req, res) {
+	console.log(req.body);
 	var fromUser = req.body.name;
-	var message = req.body.message;
+	var message = req.body.text;
 	console.log(fromUser)
 	console.log(message)
 	if (message) {
@@ -74,7 +76,15 @@ app.post('/receiver', function(req, res) {
 						var randomnumber = Math.floor(Math.random() * 24);
 						randomMessage = messages[randomnumber];
 						answer = fromUser + ", " + randomMessage;
-						res.send(answer);
+						
+						$.ajax({
+							type: "POST",
+							url: "https://api.groupme.com/v3/bots/post",
+							dataType: 'json',
+							async: false,
+							data: '{"text" : "'+answer+'", "bot_id" : "6700b3625fa11e760d1a66460b"}',
+							success: function(){}
+						});
 					}
 				}
 			}
