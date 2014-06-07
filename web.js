@@ -49,7 +49,7 @@ app.post('/receiver', function(req, res) {
 					    	listItems = body.list;
 					    	if (listItems && listItems.length > 0) {
 					    		listItem = listItems[0];
-					    		answer = fromUser + ", phd means '" + listItem.definition + "'.";
+					    		answer = fromUser + ", " + term + " means '" + listItem.definition + "'.";
 					    		request.post('https://api.groupme.com/v3/bots/post', {form:{bot_id: botId,text: answer}});
 					    	}
 					    }
