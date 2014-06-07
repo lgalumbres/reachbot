@@ -10,14 +10,15 @@ app.use(bodyParser());
 
 // Handle GET request
 app.get('/', function(req, res) {
-	res.send('Hello World!');
+	res.send('Hello, I am the reachbot.');
 });
 
 // Handle POST request
 app.post('/receiver', function(req, res) {
 	var fromUser = req.body.name;
 	var message = req.body.message;
-	
+	console.log(fromUser)
+	console.log(message)
 	if (message) {
 		console.log(message);
 		msgTokens = message.split(" ");
