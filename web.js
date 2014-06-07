@@ -19,7 +19,6 @@ app.post('/receiver', function(req, res) {
 	var fromUser = req.body.name;
 	var message = req.body.text;
 	var groupId = req.body.group_id;
-	
 	var botId = (groupId == "8592658" ? "6700b3625fa11e760d1a66460b" : "1b0a65dc0963428c4d1946d735");
 	
 	if (message) {
@@ -39,7 +38,22 @@ app.post('/receiver', function(req, res) {
 				}
 				// Urban Dictionary search
 				else if (cmd.toLowerCase() == cmds[2]) {
-					
+					var term = msgTokens[2];
+					var url = "http://api.urbandictionary.com/v0/define?term="+term
+
+					request({
+						url: url,
+						json: true
+					}, function (error, response, body) {
+					    if (!error && response.statusCode === 200) {
+					    	listItems = body.list;
+					    	if (listItems && listItems.length > 0) {
+					    		listItem = listItems[0];
+					    		answer = fromUser + ", phd means '" + listItem.definition + "'.";
+					    		request.post('https://api.groupme.com/v3/bots/post', {form:{bot_id: botId,text: answer}});
+					    	}
+					    }
+					});
 				}
 				// Magic 8 Ball
 				else {
@@ -77,6 +91,9 @@ app.post('/receiver', function(req, res) {
 					}
 				}
 			}
+		}
+		else if (msgTokens && msgTokens.length == 1) {
+			request.post('https://api.groupme.com/v3/bots/post', {form:{bot_id: botId,text: "Yeah, what's up "+fromUser+"?"}});
 		}
 	}
 });
