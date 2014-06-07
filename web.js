@@ -86,7 +86,7 @@ app.post('/receiver', function(req, res) {
 						
 						var headers = {
 							'Content-Type': 'application/json',
-							'Content-Length': userString.length
+							'Content-Length': dataString.length
 						};
 						
 						var options = {
