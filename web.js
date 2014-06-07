@@ -3,7 +3,7 @@ var cmds = [".google", ".scores", ".ud"]
 var bodyParser = require("body-parser");
 var express = require("express");
 var logfmt = require("logfmt");
-var $ = require('jquery')(window);
+var http = require('http');
 var app = express();
 
 app.use(logfmt.requestLogger());
@@ -77,6 +77,48 @@ app.post('/receiver', function(req, res) {
 						randomMessage = messages[randomnumber];
 						answer = fromUser + ", " + randomMessage;
 						
+						var botMessage = {
+							bot_id: "6700b3625fa11e760d1a66460b",
+							text: answer
+						};
+
+						var dataString = JSON.stringify(botMessage);
+						
+						var headers = {
+							'Content-Type': 'application/json',
+							'Content-Length': userString.length
+						};
+						
+						var options = {
+							host: 'api.groupme.com',
+							path: '/v3/bots/post',
+							method: 'POST',
+							headers: headers
+						};
+						
+						// Setup the request.  The options parameter is
+						// the object we defined above.
+						var request = http.request(options, function(response) {
+							response.setEncoding('utf-8');
+							var responseString = '';
+							
+							response.on('data', function(data) {
+								responseString += data;
+							});
+							
+							response.on('end', function() {
+								var resultObject = JSON.parse(responseString);
+							});
+						});
+
+						request.on('error', function(e) {
+						  // TODO: handle error.
+						});
+
+						request.write(dataString);
+						request.end();
+						
+						/*
 						$.ajax({
 							type: "POST",
 							url: "https://api.groupme.com/v3/bots/post",
@@ -85,6 +127,7 @@ app.post('/receiver', function(req, res) {
 							data: '{"text" : "'+answer+'", "bot_id" : "6700b3625fa11e760d1a66460b"}',
 							success: function(){}
 						});
+						*/
 					}
 				}
 			}
