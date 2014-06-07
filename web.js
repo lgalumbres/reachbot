@@ -93,7 +93,10 @@ app.post('/receiver', function(req, res) {
 			}
 		}
 		else if (msgTokens && msgTokens.length == 1) {
-			request.post('https://api.groupme.com/v3/bots/post', {form:{bot_id: botId,text: "Yeah, what's up "+fromUser+"?"}});
+			var bot = msgTokens[0];
+			if (bot.toLowerCase() == botName) {
+				request.post('https://api.groupme.com/v3/bots/post', {form:{bot_id: botId,text: "Yeah, what's up "+fromUser+"?"}});
+			}
 		}
 	}
 });
