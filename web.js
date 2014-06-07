@@ -69,7 +69,7 @@ app.post('/receiver', function(req, res) {
 						messages[22] = "yaasss!";
 						messages[23] = "one less lonely negroll....";
 						
-						var randomnumber = Math.floor(Math.random() * 24);
+						var randomnumber = Math.floor(Math.random() * 23);
 						randomMessage = messages[randomnumber];
 						answer = fromUser + ", " + randomMessage;
 						
