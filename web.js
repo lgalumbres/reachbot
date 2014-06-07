@@ -1,9 +1,11 @@
 var botName = "reachbot";
-var cmds = [".google", ".scores", ".ud"]
+var cmds = [".google", ".scores", ".ud"];
 var bodyParser = require("body-parser");
 var express = require("express");
 var logfmt = require("logfmt");
 var request = require('request');
+var HashMap = require('hashmap').HashMap;
+require('date-utils');
 var app = express();
 
 app.use(logfmt.requestLogger());
@@ -34,7 +36,64 @@ app.post('/receiver', function(req, res) {
 				} 
 				// Scores query
 				else if (cmd.toLowerCase() == cmds[1]) {
+					var answer = "";
+					var sport = msgTokens[2];
+					var host = "http://api.espn.com";
+					var queryParams = "?advance=true&apiKey=7zx98fmr2e5mwmbgjezfnxeu";
+					var scoresPaths = new HashMap();
+					scoresPaths.set("nhl","/v1/sports/hockey/nhl/events");
+					scoresPaths.set("mlb","/v1/sports/baseball/mlb/events");
+					scoresPaths.set("nfl","/v1/sports/football/nfl/events");
+					scoresPaths.set("ncaaf","/v1/sports/football/college-football/events");
+					scoresPaths.set("nba","/v1/sports/basketball/nba/events");
+					scoresPaths.set("ncaab","/v1/sports/basketball/mens-college-basketball/events");
+					scoresPaths.set("wnba","/v1/sports/basketball/wnba/events");
+					scoresPaths.set("ncaaw","/v1/sports/basketball/womens-college-basketball/events");
 					
+					var path = scoresPaths.get(sport);
+					if (path) {
+						var url = host + path + queryParams;
+						request(url, function (error, response, body) {
+							if (!error && response.statusCode == 200) {
+								jsonObj = JSON.parse(body);
+								if (jsonObj) {
+									var events = jsonObj.sports[0].leagues[0].events;
+									if (events && events.length > 0) {
+										var addComma = false;
+										for (var i = 0; i < events.length; i++) {
+											var gameInfo = "";
+											var event = events[i].competitions[0];
+											var status = event.status;
+											var homeCompetitor = event.competitors[0];
+											var awayCompetitor = event.competitors[1];
+											if (status.state == "pre") {
+												var detail = status.shortDetail;
+												if (event.timeValid) {
+													var date = new Date(status.shortDetail);
+													dateStr = date.toFormat("DDD MM/DD H:MI PP");
+													gameInfo = dateStr + " - " + awayCompetitor.team.abbreviation + " @ " + homeCompetitor.team.abbreviation;
+												}
+											}
+											else if (status.state == "in" || status.state == "post") {
+												gameInfo = status.shortDetail + " - " + awayCompetitor.team.abbreviation + " (" + awayCompetitor.score + ") @ " + homeCompetitor.team.abbreviation + " (" + homeCompetitor.score + ")";
+											}
+											answer = answer + gameInfo + (i == events.length - 1 ? "" : ", ");
+										}
+									}
+									else {
+										answer = fromUser + ", no games scheduled right now.";
+									}
+								}
+								else {
+									answer = fromUser + ", something went wrong.... I need to go to the bathroom.";
+								}
+								request.post('https://api.groupme.com/v3/bots/post', {form:{bot_id: botId,text: answer}});
+							}
+						});
+					} else {
+						answer = fromUser + ", what's " + term +"? I don't know the schedule for that shit."; 
+						request.post('https://api.groupme.com/v3/bots/post', {form:{bot_id: botId,text: answer}});
+					}
 				}
 				// Urban Dictionary search
 				else if (cmd.toLowerCase() == cmds[2]) {
@@ -47,11 +106,15 @@ app.post('/receiver', function(req, res) {
 					}, function (error, response, body) {
 					    if (!error && response.statusCode === 200) {
 					    	listItems = body.list;
+					    	answer = "";
 					    	if (listItems && listItems.length > 0) {
 					    		listItem = listItems[0];
 					    		answer = fromUser + ", " + term + " means '" + listItem.definition + "'.";
-					    		request.post('https://api.groupme.com/v3/bots/post', {form:{bot_id: botId,text: answer}});
 					    	}
+					    	else {
+					    		answer = fromUser + ", I couldnt find a definition on " + term +"."; 
+					    	}
+					    	request.post('https://api.groupme.com/v3/bots/post', {form:{bot_id: botId,text: answer}});
 					    }
 					});
 				}
