@@ -3,7 +3,7 @@ var cmds = [".google", ".scores", ".ud"]
 var bodyParser = require("body-parser");
 var express = require("express");
 var logfmt = require("logfmt");
-var $ = require('jquery');
+var $ = require('jquery')(window);
 var app = express();
 
 app.use(logfmt.requestLogger());
