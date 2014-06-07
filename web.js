@@ -18,6 +18,10 @@ app.get('/', function(req, res) {
 app.post('/receiver', function(req, res) {
 	var fromUser = req.body.name;
 	var message = req.body.text;
+	var groupId = req.body.group_id;
+	
+	var botId = (groupId == "8592658" ? "6700b3625fa11e760d1a66460b" : "1b0a65dc0963428c4d1946d735");
+	
 	if (message) {
 		msgTokens = message.split(" ");
 		if (msgTokens && msgTokens.length > 1) {
@@ -69,7 +73,7 @@ app.post('/receiver', function(req, res) {
 						randomMessage = messages[randomnumber];
 						answer = fromUser + ", " + randomMessage;
 						
-						request.post('https://api.groupme.com/v3/bots/post', {form:{bot_id: '6700b3625fa11e760d1a66460b',text: answer}});
+						request.post('https://api.groupme.com/v3/bots/post', {form:{bot_id: botId,text: answer}});
 					}
 				}
 			}
