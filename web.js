@@ -74,9 +74,11 @@ app.post('/receiver', function(req, res) {
 													var detail = status.shortDetail;
 													if (event.timeValid) {
 														var date = new Date(status.shortDetail);
-														dateStr = date.toFormat("DDD MM/DD H:MI PP");
+														dateStr = date.toFormat("DDD M/D H:MI PP");
+														//dateStr = date.toString();
 														gameInfo = dateStr + " - " + awayCompetitor.team.abbreviation + " @ " + homeCompetitor.team.abbreviation;
 													}
+													console.log(gameInfo)
 												}
 												else if (status.state == "in" || status.state == "post") {
 													gameInfo = status.shortDetail + " - " + awayCompetitor.team.abbreviation + " (" + awayCompetitor.score + ") @ " + homeCompetitor.team.abbreviation + " (" + homeCompetitor.score + ")";
@@ -95,13 +97,17 @@ app.post('/receiver', function(req, res) {
 								}
 							});
 						} else {
-							answer = fromUser + ", what's " + term +"? I don't know the schedule for that shit."; 
+							answer = fromUser + ", what's " + sport +"? I don't know the schedule for that shit."; 
 							request.post('https://api.groupme.com/v3/bots/post', {form:{bot_id: botId,text: answer}});
 						}
 					}
 					// Urban Dictionary search
 					else if (cmd.toLowerCase() == cmds[2]) {
-						var term = msgTokens[2];
+						var term = "";
+						for (var i = 2; i < msgTokens.length; i++) {
+							term = term + " " + msgTokens[i];
+						}
+						console.log("term="+term.trim())
 						var url = "http://api.urbandictionary.com/v0/define?term="+term
 
 						request({
