@@ -43,7 +43,7 @@ app.post('/receiver', function(req, res) {
 						var answer = "";
 						var sport = msgTokens[2];
 						var host = "http://api.espn.com";
-						var queryParams = "?advance=true&apiKey=7zx98fmr2e5mwmbgjezfnxeu";
+						var queryParams = "?apiKey=7zx98fmr2e5mwmbgjezfnxeu";
 						var scoresPaths = new HashMap();
 						scoresPaths.set("nhl","/v1/sports/hockey/nhl/events");
 						scoresPaths.set("mlb","/v1/sports/baseball/mlb/events");
@@ -53,10 +53,15 @@ app.post('/receiver', function(req, res) {
 						scoresPaths.set("ncaab","/v1/sports/basketball/mens-college-basketball/events");
 						scoresPaths.set("wnba","/v1/sports/basketball/wnba/events");
 						scoresPaths.set("ncaaw","/v1/sports/basketball/womens-college-basketball/events");
+						scoresPaths.set("wc2014","/v1/sports/soccer/fifa.world/events");
+						
+						var today = new Date();
+						var todayParam = "&"+today.toFormat("YYYYMMDD");
+						var advanceParam = "&advance=true";
 						
 						var path = scoresPaths.get(sport);
 						if (path) {
-							var url = host + path + queryParams;
+							var url = host + path + queryParams + (sport == "wc2014" ? todayParam : advance);
 							request(url, function (error, response, body) {
 								if (!error && response.statusCode == 200) {
 									jsonObj = JSON.parse(body);
