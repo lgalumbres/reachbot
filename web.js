@@ -172,7 +172,7 @@ app.post('/receiver', function(req, res) {
 			}
 			else if (msgTokens && msgTokens.length == 1) {
 				var bot = msgTokens[0];
-				if (bot.toLowerCase() == botName) {
+				if (botNames.indexOf(bot.toLowerCase()) > -1) {
 					request.post('https://api.groupme.com/v3/bots/post', {form:{bot_id: botId,text: "Yeah, what's up "+fromUser+"?"}});
 				}
 			}
