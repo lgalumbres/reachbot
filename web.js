@@ -1,4 +1,4 @@
-var botName = ["@reachbot", "@laobot", "@fuckbot"];
+var botNames = ["@reachbot", "@laobot", "@fuckbot"];
 var cmds = ["google", "scores", "ud"];
 var bodyParser = require("body-parser");
 var express = require("express");
