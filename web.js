@@ -31,7 +31,7 @@ app.post('/receiver', function(req, res) {
 			msgTokens = message.split(" ");
 			if (msgTokens && msgTokens.length > 1) {
 				var bot = msgTokens[0];
-				if (botNames.contains(bot.toLowerCase())) {
+				if (botNames.indexOf(bot.toLowerCase()) > -1) {
 					var cmd = msgTokens[1];
 					var lastToken = msgTokens[msgTokens.length - 1];
 					// Google search
