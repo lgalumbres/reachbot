@@ -1,5 +1,5 @@
-var botName = "reachbot";
-var cmds = [".google", ".scores", ".ud"];
+var botName = ["@reachbot", "@laobot", "@fuckbot"];
+var cmds = ["google", "scores", "ud"];
 var bodyParser = require("body-parser");
 var express = require("express");
 var logfmt = require("logfmt");
@@ -13,7 +13,7 @@ app.use(bodyParser());
 
 // Handle GET request
 app.get('/', function(req, res) {
-	res.send('Hello, I am the reachbot.');
+	res.send('Hello, property of reachlife.');
 });
 
 // Handle POST request
@@ -31,7 +31,7 @@ app.post('/receiver', function(req, res) {
 			msgTokens = message.split(" ");
 			if (msgTokens && msgTokens.length > 1) {
 				var bot = msgTokens[0];
-				if (bot.toLowerCase() == botName) {
+				if (botNames.contains(bot.toLowerCase())) {
 					var cmd = msgTokens[1];
 					var lastToken = msgTokens[msgTokens.length - 1];
 					// Google search
