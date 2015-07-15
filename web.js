@@ -43,7 +43,7 @@ app.post('/receiver', function(req, res) {
 						var answer = "";
 						var sport = msgTokens[2];
 						var host = "http://api.espn.com";
-						var queryParams = "?apiKey=7zx98fmr2e5mwmbgjezfnxeu";
+						var queryParams = "?apiKey=foobar";
 						var scoresPaths = new HashMap();
 						scoresPaths.set("nhl","/v1/sports/hockey/nhl/events");
 						scoresPaths.set("mlb","/v1/sports/baseball/mlb/events");
