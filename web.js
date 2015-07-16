@@ -13,36 +13,36 @@ app.use(bodyParser());
 
 // Handle GET request
 app.get('/', function(req, res) {
-	res.send('<html>'+
-			'<head>'+
-			'<title>#Reachlife</title>'+
-			'</head>'+
-			'<body>'+
-			''+
-			'<h4>Hello, this bot is the property of #reachlife.</h4>'+
-			''+
-			'<p>Bots: @reachbot, @laobot and @fuckbot</p>'+
-			''+
-			'<code>'+
-			'<pre>'+
-			'	Supported commands:'+
-			''+
-			'	Urban Dictionary term search:'+
-			'		{bot} ud {term}'+
-			'		@reachbot ud thot'+
-			''+
-			'	Random joke:'+
-			'		{bot} joke'+
-			'		@reachbot joke'+
-			''+
-			'	8Ball:'+
-			'		{bot} {question}?'+
-			'		@reachbot do you like me?'+
-			'</pre>'+
-			'</code>'+
-			''+
-			'</body>'+
-			'</html>');
+	res.send('<html>\n'+
+			'<head>\n'+
+			'<title>#Reachlife</title>\n'+
+			'</head>\n'+
+			'<body>\n'+
+			'\n'+
+			'<h4>Hello, this bot is the property of #reachlife.</h4>\n'+
+			'\n'+
+			'<p>Bots: @reachbot, @laobot and @fuckbot</p>\n'+
+			'\n'+
+			'<code>\n'+
+			'<pre>\n'+
+			'	Supported commands:\n'+
+			'\n'+
+			'	Urban Dictionary term search:\n'+
+			'		{bot} ud {term}\n'+
+			'		@reachbot ud thot\n'+
+			'\n'+
+			'	Random joke:\n'+
+			'		{bot} joke\n'+
+			'		@reachbot joke\n'+
+			'\n'+
+			'	8Ball:\n'+
+			'		{bot} {question}?\n'+
+			'		@reachbot do you like me?\n'+
+			'</pre>\n'+
+			'</code>\n'+
+			'\n'+
+			'</body>\n'+
+			'</html>\n');
 });
 
 // Handle POST request
