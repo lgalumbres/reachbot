@@ -21,7 +21,15 @@ app.post('/receiver', function(req, res) {
 	var fromUser = req.body.name;
 	var message = req.body.text;
 	var groupId = req.body.group_id;
-	var botId = (groupId == "8592658" ? "6700b3625fa11e760d1a66460b" : "1b0a65dc0963428c4d1946d735");
+	
+	// Set botId
+	var botId = "1b0a65dc0963428c4d1946d735"; // #reachlife
+	if (groupId == "8592658") {
+		botId = "6700b3625fa11e760d1a66460b"; // test group
+	}
+	else if (groupId == "7377546") {
+		botId = "76bbaccc18e94074c8f7e3be3d"; // Daves group
+	}
 	
 	if (message) {
 		if (message.toLowerCase() == "i love you reachbot") {
