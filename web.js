@@ -1,5 +1,5 @@
 var botNames = ["@reachbot", "@laobot", "@fuckbot"];
-var cmds = ["google", "scores", "ud"];
+var cmds = ["google", "scores", "ud", "joke"];
 var bodyParser = require("body-parser");
 var express = require("express");
 var logfmt = require("logfmt");
@@ -138,6 +138,18 @@ app.post('/receiver', function(req, res) {
 						    		answer = fromUser + ", I couldnt find a definition on " + term +"."; 
 						    	}
 						    	request.post('https://api.groupme.com/v3/bots/post', {form:{bot_id: botId,text: answer}});
+						    }
+						});
+					}
+					// Joke
+					else if (cmd.toLowerCase() == cmds[3]) {
+						var url = "http://api.icndb.com/jokes/random";
+						request({
+							url: url,
+							json: true
+						}, function (error, response, body) {
+						    if (!error && response.statusCode === 200) {
+						    	request.post('https://api.groupme.com/v3/bots/post', {form:{bot_id: botId,text: body.value.joke}});
 						    }
 						});
 					}
