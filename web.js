@@ -13,7 +13,36 @@ app.use(bodyParser());
 
 // Handle GET request
 app.get('/', function(req, res) {
-	res.send('Hello, property of reachlife.');
+	res.send('<html>'+
+			'<head>'+
+			'<title>#Reachlife</title>'+
+			'</head>'+
+			'<body>'+
+			''+
+			'<h4>Hello, this bot is the property of #reachlife.</h4>'+
+			''+
+			'<p>Bots: @reachbot, @laobot and @fuckbot</p>'+
+			''+
+			'<code>'+
+			'<pre>'+
+			'	Supported commands:'+
+			''+
+			'	Urban Dictionary term search:'+
+			'		{bot} ud {term}'+
+			'		@reachbot ud thot'+
+			''+
+			'	Random joke:'+
+			'		{bot} joke'+
+			'		@reachbot joke'+
+			''+
+			'	8Ball:'+
+			'		{bot} {question}?'+
+			'		@reachbot do you like me?'+
+			'</pre>'+
+			'</code>'+
+			''+
+			'</body>'+
+			'</html>');
 });
 
 // Handle POST request
