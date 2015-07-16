@@ -38,6 +38,10 @@ app.get('/', function(req, res) {
 			'	8Ball:\n'+
 			'		Command: {bot} {question}?\n'+
 			'		Example: @reachbot do you like me?\n'+
+			'\n'+
+			'	Giphy search image:\n'+
+			'		Command: {bot} giphy {term}?\n'+
+			'		Example: @reachbot giphy molly\n'+
 			'</pre>\n'+
 			'</code>\n'+
 			'\n'+
