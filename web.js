@@ -132,7 +132,7 @@ app.post('/receiver', function(req, res) {
 						}, function (error, response, body) {
 						    if (!error && response.statusCode === 200) {
 						    	var image = body.data[0];
-						    	request.post('https://api.groupme.com/v3/bots/post', {form: { bot_id: botId, text: image.fixed_height.url } });
+						    	request.post('https://api.groupme.com/v3/bots/post', {form: { bot_id: botId, text: image.images.fixed_height.url } });
 						    }
 						});
 					}
