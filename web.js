@@ -28,16 +28,16 @@ app.get('/', function(req, res) {
 			'	Supported commands:\n'+
 			'\n'+
 			'	Urban Dictionary term search:\n'+
-			'		{bot} ud {term}\n'+
-			'		@reachbot ud thot\n'+
+			'		Command: {bot} ud {term}\n'+
+			'		Example: @reachbot ud thot\n'+
 			'\n'+
 			'	Random joke:\n'+
-			'		{bot} joke\n'+
-			'		@reachbot joke\n'+
+			'		Command: {bot} joke\n'+
+			'		Example: @reachbot joke\n'+
 			'\n'+
 			'	8Ball:\n'+
-			'		{bot} {question}?\n'+
-			'		@reachbot do you like me?\n'+
+			'		Command: {bot} {question}?\n'+
+			'		Example: @reachbot do you like me?\n'+
 			'</pre>\n'+
 			'</code>\n'+
 			'\n'+
