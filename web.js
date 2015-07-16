@@ -1,5 +1,5 @@
 var botNames = ["@reachbot", "@laobot", "@fuckbot"];
-var cmds = ["google", "scores", "ud", "joke"];
+var cmds = ["google", "scores", "ud", "joke", "giphy"];
 var bodyParser = require("body-parser");
 var express = require("express");
 var logfmt = require("logfmt");
@@ -77,71 +77,7 @@ app.post('/receiver', function(req, res) {
 					} 
 					// Scores query
 					else if (cmd.toLowerCase() == cmds[1]) {
-						var answer = "";
-						var sport = msgTokens[2];
-						var host = "http://api.espn.com";
-						var queryParams = "?apiKey=foobar";
-						var scoresPaths = new HashMap();
-						scoresPaths.set("nhl","/v1/sports/hockey/nhl/events");
-						scoresPaths.set("mlb","/v1/sports/baseball/mlb/events");
-						scoresPaths.set("nfl","/v1/sports/football/nfl/events");
-						scoresPaths.set("ncaaf","/v1/sports/football/college-football/events");
-						scoresPaths.set("nba","/v1/sports/basketball/nba/events");
-						scoresPaths.set("ncaab","/v1/sports/basketball/mens-college-basketball/events");
-						scoresPaths.set("wnba","/v1/sports/basketball/wnba/events");
-						scoresPaths.set("ncaaw","/v1/sports/basketball/womens-college-basketball/events");
-						scoresPaths.set("wc2014","/v1/sports/soccer/fifa.world/events");
 						
-						var today = new Date();
-						var todayParam = "&"+today.toFormat("YYYYMMDD");
-						var advanceParam = "&advance=true";
-						
-						var path = scoresPaths.get(sport);
-						if (path) {
-							var url = host + path + queryParams + (sport == "wc2014" ? todayParam : advance);
-							request(url, function (error, response, body) {
-								if (!error && response.statusCode == 200) {
-									jsonObj = JSON.parse(body);
-									if (jsonObj) {
-										var events = jsonObj.sports[0].leagues[0].events;
-										if (events && events.length > 0) {
-											var addComma = false;
-											for (var i = 0; i < events.length; i++) {
-												var gameInfo = "";
-												var event = events[i].competitions[0];
-												var status = event.status;
-												var homeCompetitor = event.competitors[0];
-												var awayCompetitor = event.competitors[1];
-												if (status.state == "pre") {
-													var detail = status.shortDetail;
-													if (event.timeValid) {
-														var date = new Date(status.shortDetail);
-														dateStr = date.toFormat("DDD M/D H:MI PP");
-														//dateStr = date.toString();
-														gameInfo = dateStr + " - " + awayCompetitor.team.abbreviation + " @ " + homeCompetitor.team.abbreviation;
-													}
-													console.log(gameInfo)
-												}
-												else if (status.state == "in" || status.state == "post") {
-													gameInfo = status.shortDetail + " - " + awayCompetitor.team.abbreviation + " (" + awayCompetitor.score + ") @ " + homeCompetitor.team.abbreviation + " (" + homeCompetitor.score + ")";
-												}
-												answer = answer + gameInfo + (i == events.length - 1 ? "" : ", ");
-											}
-										}
-										else {
-											answer = fromUser + ", no games scheduled right now.";
-										}
-									}
-									else {
-										answer = fromUser + ", something went wrong.... I need to go to the bathroom.";
-									}
-									request.post('https://api.groupme.com/v3/bots/post', {form:{bot_id: botId,text: answer}});
-								}
-							});
-						} else {
-							answer = fromUser + ", what's " + sport +"? I don't know the schedule for that shit."; 
-							request.post('https://api.groupme.com/v3/bots/post', {form:{bot_id: botId,text: answer}});
-						}
 					}
 					// Urban Dictionary search
 					else if (cmd.toLowerCase() == cmds[2]) {
@@ -179,6 +115,24 @@ app.post('/receiver', function(req, res) {
 						}, function (error, response, body) {
 						    if (!error && response.statusCode === 200) {
 						    	request.post('https://api.groupme.com/v3/bots/post', {form:{bot_id: botId,text: body.value.joke}});
+						    }
+						});
+					}
+					// Giphy
+					else if (cmd.toLowerCase() == cmds[4]) {
+						var term = "";
+						for (var i = 2; i < msgTokens.length; i++) {
+							term = term + " " + msgTokens[i];
+						}
+						console.log("giphysearch="+term.trim())
+						var url = "http://api.giphy.com/v1/gifs/search?q="+term+"&api_key=dc6zaTOxFJmzC";
+						request({
+							url: url,
+							json: true
+						}, function (error, response, body) {
+						    if (!error && response.statusCode === 200) {
+						    	var image = body.data[0];
+						    	request.post('https://api.groupme.com/v3/bots/post', {form: { bot_id: botId, text: image.fixed_height.url } });
 						    }
 						});
 					}
