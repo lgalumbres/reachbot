@@ -152,6 +152,7 @@ app.post('/receiver', function(req, res) {
 						    }
 						});
 					}
+					// Weather
 					else if (cmd.toLowerCase() == cmds[5]) {
 						var location = "";
 						for (var i = 2; i < msgTokens.length; i++) {
