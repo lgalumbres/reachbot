@@ -135,7 +135,10 @@ app.post('/receiver', function(req, res) {
 							json: true
 						}, function (error, response, body) {
 						    if (!error && response.statusCode === 200) {
-						    	var image = body.data[0];
+						    	var images = body.data;
+						    	// Get random image from result
+						    	var randomIndex = Math.floor(Math.random() * images.length);
+								var image = body.data[randomIndex];
 						    	request.post('https://api.groupme.com/v3/bots/post', {form: { bot_id: botId, text: image.images.fixed_height.url } });
 						    }
 						});
