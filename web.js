@@ -1,5 +1,5 @@
 var botNames = ["@reachbot", "@laobot", "@fuckbot"];
-var cmds = ["google", "scores", "ud", "joke", "giphy"];
+var cmds = ["google", "scores", "ud", "joke", "giphy", "weather"];
 var bodyParser = require("body-parser");
 var express = require("express");
 var logfmt = require("logfmt");
@@ -140,6 +140,26 @@ app.post('/receiver', function(req, res) {
 						    	var randomIndex = Math.floor(Math.random() * images.length);
 								var image = body.data[randomIndex];
 						    	request.post('https://api.groupme.com/v3/bots/post', {form: { bot_id: botId, text: image.images.fixed_height.url } });
+						    }
+						});
+					}
+					else if (cmd.toLowerCase() == cmds[5]) {
+						var location = "";
+						for (var i = 2; i < msgTokens.length; i++) {
+							location = location + " " + msgTokens[i];
+						}
+						console.log("location="+location.trim());
+						var url = "http://api.openweathermap.org/data/2.5/weather?q="+location+"&units=imperial";
+						request({
+							url: url,
+							json: true
+						}, function (error, response, body) {
+						    if (!error && response.statusCode === 200) {
+						    	var weather = body.weather;
+						    	var main = body.main;
+						    	var temp = Math.floor(main.temp);
+						    	var summary = temp + "° in " + body.name + ", " + weather.description;
+						    	request.post('https://api.groupme.com/v3/bots/post', {form: { bot_id: botId, text: summary } });
 						    }
 						});
 					}
