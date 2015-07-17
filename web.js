@@ -140,10 +140,15 @@ app.post('/receiver', function(req, res) {
 						}, function (error, response, body) {
 						    if (!error && response.statusCode === 200) {
 						    	var images = body.data;
-						    	// Get random image from result
-						    	var randomIndex = Math.floor(Math.random() * images.length);
-								var image = body.data[randomIndex];
-						    	request.post('https://api.groupme.com/v3/bots/post', {form: { bot_id: botId, text: image.images.fixed_height.url } });
+						    	if (images) {
+						    		// Get random image from result
+							    	var randomIndex = Math.floor(Math.random() * images.length);
+									var image = body.data[randomIndex];
+							    	request.post('https://api.groupme.com/v3/bots/post', {form: { bot_id: botId, text: image.images.fixed_height.url } });
+						    	}
+						    	else {
+						    		request.post('https://api.groupme.com/v3/bots/post', {form: { bot_id: botId, text: "Could not find any gifs "+fromUser+"." } });
+						    	}
 						    }
 						});
 					}
@@ -159,11 +164,16 @@ app.post('/receiver', function(req, res) {
 							json: true
 						}, function (error, response, body) {
 						    if (!error && response.statusCode === 200) {
-						    	var weather = body.weather[0];
-						    	var main = body.main;
-						    	var temp = Math.floor(main.temp);
-						    	var summary = temp + "° in " + body.name + ", " + weather.description;
-						    	request.post('https://api.groupme.com/v3/bots/post', {form: { bot_id: botId, text: summary } });
+						    	if (body.weather) {
+						    		var weather = body.weather[0];
+							    	var main = body.main;
+							    	var temp = Math.floor(main.temp);
+							    	var summary = temp + "° in " + body.name + ", " + weather.description;
+							    	request.post('https://api.groupme.com/v3/bots/post', {form: { bot_id: botId, text: summary } });
+						    	}
+						    	else {
+						    		request.post('https://api.groupme.com/v3/bots/post', {form: { bot_id: botId, text: "Could not find any weather info for that location "+fromUser+"."  } });
+						    	}
 						    }
 						});
 					}
