@@ -42,6 +42,10 @@ app.get('/', function(req, res) {
 			'	Giphy search image:\n'+
 			'		Command: {bot} giphy {term}\n'+
 			'		Example: @reachbot giphy molly\n'+
+			'\n'+
+			'	Weather:\n'+
+			'		Command: {bot} weather {location}\n'+
+			'		Example: @reachbot weather San Diego, CA\n'+
 			'</pre>\n'+
 			'</code>\n'+
 			'\n'+
@@ -155,7 +159,7 @@ app.post('/receiver', function(req, res) {
 							json: true
 						}, function (error, response, body) {
 						    if (!error && response.statusCode === 200) {
-						    	var weather = body.weather;
+						    	var weather = body.weather[0];
 						    	var main = body.main;
 						    	var temp = Math.floor(main.temp);
 						    	var summary = temp + "° in " + body.name + ", " + weather.description;
