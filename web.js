@@ -189,7 +189,7 @@ app.post('/receiver', function(req, res) {
 							track = track + " " + msgTokens[i];
 						}
 						console.log("track="+track.trim());
-						var url = "https://api.spotify.com/v1/search?q="+track+"&type=track";
+						var url = "https://api.spotify.com/v1/search?q="+track+"&type=track&limit=3";
 						request({
 							url: url,
 							json: true
@@ -197,14 +197,15 @@ app.post('/receiver', function(req, res) {
 						    if (!error && response.statusCode === 200) {
 						    	if (body.tracks.items) {
 						    		var summary = ""
-						    		console.log(body.tracks.items)
 						    		var items = body.tracks.items;
-						    		var limit = 3;
+						    		console.log("items.length="+items.length)
+						    		console.log("items[0]"+items)
 						    		for (var i = 0; i < items.length; i++) {
-						    			if (i < limit) { break; }
 						    			var item = items[i];
+						    			console.log("line="+item.name + " by " + item.artist[0].name + " - Preview: " + item.preview_url + " Listen: " + item.external_urls.spotify + "\n");
 						    			summary = summary + item.name + " by " + item.artist[0].name + " - Preview: " + item.preview_url + " Listen: " + item.external_urls.spotify + "\n";
 						    		}
+						    		console.log("summary="+summary);
 							    	request.post('https://api.groupme.com/v3/bots/post', {form: { bot_id: botId, text: summary } });
 						    	}
 						    	else {
