@@ -199,7 +199,7 @@ app.post('/receiver', function(req, res) {
 						    		var summary = ""
 						    		var items = body.tracks.items;
 						    		var limit = 3;
-						    		for (int i = 0; i < items.length; i++) {
+						    		for (var i = 0; i < items.length; i++) {
 						    			if (i < limit) { break; }
 						    			var item = items[i];
 						    			summary = summary + item.name + " by " + item.artist[0].name + " - Preview: " + item.preview_url + " Listen: " + item.external_urls.spotify + "\n";
