@@ -200,8 +200,8 @@ app.post('/receiver', function(req, res) {
 						    		var items = body.tracks.items;
 						    		for (var i = 0; i < items.length; i++) {
 						    			var item = items[i];
-						    			var artist = (item.artist ? " by " + item.artist[0].name : "");
-						    			summary = summary + item.name + artist + " -\n\t Preview: " + item.preview_url + "\n Listen: " + item.external_urls.spotify + "\n\n";
+						    			var artist = (item.artists ? " by " + item.artists[0].name : "");
+						    			summary = summary + item.name + artist + " -\n\t Preview: " + item.preview_url + "\n\t Listen: " + item.external_urls.spotify + "\n\n";
 						    		}
 							    	request.post('https://api.groupme.com/v3/bots/post', {form: { bot_id: botId, text: summary } });
 						    	}
