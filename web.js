@@ -1,5 +1,5 @@
 var botNames = ["@reachbot", "@laobot", "@fuckbot"];
-var cmds = ["google", "scores", "ud", "joke", "giphy", "weather"];
+var cmds = ["google", "scores", "ud", "joke", "giphy", "weather", "spotify"];
 var bodyParser = require("body-parser");
 var express = require("express");
 var logfmt = require("logfmt");
@@ -46,6 +46,10 @@ app.get('/', function(req, res) {
 			'	Weather:\n'+
 			'		Command: {bot} weather {location}\n'+
 			'		Example: @reachbot weather San Diego, CA\n'+
+			'\n'+
+			'	Spotify search tracks:\n'+
+			'		Command: {bot} spotify {track}\n'+
+			'		Example: @reachbot spotify Like A Prayer\n'+
 			'</pre>\n'+
 			'</code>\n'+
 			'\n'+
@@ -174,6 +178,36 @@ app.post('/receiver', function(req, res) {
 						    	}
 						    	else {
 						    		request.post('https://api.groupme.com/v3/bots/post', {form: { bot_id: botId, text: "Could not find any weather info for that location "+fromUser+"."  } });
+						    	}
+						    }
+						});
+					}
+					// Spotify
+					else if (cmd.toLowerCase() == cmds[6]) {
+						var track = "";
+						for (var i = 2; i < msgTokens.length; i++) {
+							track = track + " " + msgTokens[i];
+						}
+						console.log("track="+track.trim());
+						var url = "https://api.spotify.com/v1/search?q="+track+"&type=track";
+						request({
+							url: url,
+							json: true
+						}, function (error, response, body) {
+						    if (!error && response.statusCode === 200) {
+						    	if (body.tracks.items) {
+						    		var summary = ""
+						    		var items = body.tracks.items;
+						    		var limit = 3;
+						    		for (int i = 0; i < items.length; i++) {
+						    			if (i < limit) { break; }
+						    			var item = items[i];
+						    			summary = summary + item.name + " by " + item.artist[0].name + " - Preview: " + item.preview_url + " Listen: " + item.external_urls.spotify + "\n";
+						    		}
+							    	request.post('https://api.groupme.com/v3/bots/post', {form: { bot_id: botId, text: summary } });
+						    	}
+						    	else {
+						    		request.post('https://api.groupme.com/v3/bots/post', {form: { bot_id: botId, text: "Could not find any info for that track "+fromUser+"."  } });
 						    	}
 						    }
 						});
