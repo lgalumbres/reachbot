@@ -228,7 +228,7 @@ app.post('/receiver', function(req, res) {
 							json: true
 						}, function (error, response, body) {
 						    if (!error && response.statusCode === 200) {
-						    	if (body.items) {
+						    	if (body.items && body.items.length > 0) {
 						    		var summary = ""
 						    		var item = body.items[0];
 						    		summary = "https://www.youtube.com/watch?v=" + item.id.videoId;
