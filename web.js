@@ -197,6 +197,7 @@ app.post('/receiver', function(req, res) {
 						    if (!error && response.statusCode === 200) {
 						    	if (body.tracks.items) {
 						    		var summary = ""
+						    		console.log(body.tracks.items)
 						    		var items = body.tracks.items;
 						    		var limit = 3;
 						    		for (var i = 0; i < items.length; i++) {
