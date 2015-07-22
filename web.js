@@ -198,15 +198,11 @@ app.post('/receiver', function(req, res) {
 						    	if (body.tracks.items) {
 						    		var summary = ""
 						    		var items = body.tracks.items;
-						    		console.log("items.length="+items.length)
-						    		console.log("items[0]"+items)
 						    		for (var i = 0; i < items.length; i++) {
 						    			var item = items[i];
 						    			var artist = (item.artist ? " by " + item.artist[0].name : "");
-						    			console.log("line="+item.name + artist + " - Preview: " + item.preview_url + " Listen: " + item.external_urls.spotify + "\n");
-						    			summary = summary + item.name + artist + " - Preview: " + item.preview_url + " Listen: " + item.external_urls.spotify + "\n";
+						    			summary = summary + item.name + artist + " -\n\t Preview: " + item.preview_url + "\n Listen: " + item.external_urls.spotify + "\n\n";
 						    		}
-						    		console.log("summary="+summary);
 							    	request.post('https://api.groupme.com/v3/bots/post', {form: { bot_id: botId, text: summary } });
 						    	}
 						    	else {
