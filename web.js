@@ -1,5 +1,5 @@
 var botNames = ["@reachbot", "@laobot", "@fuckbot"];
-var cmds = ["google", "scores", "ud", "joke", "giphy", "weather", "spotify"];
+var cmds = ["google", "scores", "ud", "joke", "giphy", "weather", "spotify", "youtube"];
 var bodyParser = require("body-parser");
 var express = require("express");
 var logfmt = require("logfmt");
@@ -50,6 +50,10 @@ app.get('/', function(req, res) {
 			'	Spotify search tracks:\n'+
 			'		Command: {bot} spotify {track}\n'+
 			'		Example: @reachbot spotify Like A Prayer\n'+
+			'\n'+
+			'	Youtube search:\n'+
+			'		Command: {bot} youtube {term}\n'+
+			'		Example: @reachbot youtube Trap Queen\n'+
 			'</pre>\n'+
 			'</code>\n'+
 			'\n'+
@@ -207,6 +211,31 @@ app.post('/receiver', function(req, res) {
 						    	}
 						    	else {
 						    		request.post('https://api.groupme.com/v3/bots/post', {form: { bot_id: botId, text: "Could not find any info for that track "+fromUser+"."  } });
+						    	}
+						    }
+						});
+					}
+					// Youtube
+					else if (cmd.toLowerCase() == cmds[7]) {
+						var youtube = "";
+						for (var i = 2; i < msgTokens.length; i++) {
+							youtube = youtube + " " + msgTokens[i];
+						}
+						console.log("youtube="+youtube.trim());
+						var url = "https://www.googleapis.com/youtube/v3/search?part=id&q=" + youtube + "&maxResults=1&key=AIzaSyAJ_coOond7Z2-hY4Jdaipo2L6TY_WX0z8";
+						request({
+							url: url,
+							json: true
+						}, function (error, response, body) {
+						    if (!error && response.statusCode === 200) {
+						    	if (body.items) {
+						    		var summary = ""
+						    		var item = body.items[0];
+						    		summary = "https://www.youtube.com/watch?v=" + item.id.videoId;
+							    	request.post('https://api.groupme.com/v3/bots/post', {form: { bot_id: botId, text: summary } });
+						    	}
+						    	else {
+						    		request.post('https://api.groupme.com/v3/bots/post', {form: { bot_id: botId, text: "Could not find any video for that "+fromUser+"."  } });
 						    	}
 						    }
 						});
