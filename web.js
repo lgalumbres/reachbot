@@ -1,5 +1,5 @@
 var botNames = ["@reachbot", "@laobot", "@fuckbot"];
-var cmds = ["google", "scores", "ud", "joke", "giphy", "weather", "spotify", "youtube"];
+var cmds = ["google", "scores", "ud", "joke", "giphy", "weather", "spotify", "youtube", "ffnews"];
 var bodyParser = require("body-parser");
 var express = require("express");
 var logfmt = require("logfmt");
@@ -239,6 +239,12 @@ app.post('/receiver', function(req, res) {
 						    	}
 						    }
 						});
+					}
+					// FF news
+					else if (cmd.toLowerCase() == cmds[8]) {
+						var week = msgTokens[2];
+						var url = "http://www.cbssports.com/fantasy/football/news/week-"+week+"-fantasy-football-trade-values";
+						request.post("https://api.groupme.com/v3/bots/post", {form: { bot_id: botId, text: summary } });
 					}
 					// Magic 8 Ball
 					else {
