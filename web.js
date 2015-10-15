@@ -1,5 +1,5 @@
-var botNames = ["@reachbot", "@laobot", "@fuckbot", "@WTAbot"];
-var cmds = ["google", "scores", "ud", "joke", "giphy", "weather", "spotify", "youtube", "TVC"];
+var botNames = ["@reachbot", "@laobot", "@fuckbot", "@wtabot"];
+var cmds = ["google", "scores", "ud", "joke", "giphy", "weather", "spotify", "youtube", "tvc"];
 var bodyParser = require("body-parser");
 var express = require("express");
 var logfmt = require("logfmt");
