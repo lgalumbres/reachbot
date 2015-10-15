@@ -244,7 +244,7 @@ app.post('/receiver', function(req, res) {
 					else if (cmd.toLowerCase() == cmds[8]) {
 						var week = msgTokens[2];
 						var url = "http://www.cbssports.com/fantasy/football/news/week-"+week+"-fantasy-football-trade-values";
-						request.post("https://api.groupme.com/v3/bots/post", {form: { bot_id: botId, text: summary } });
+						request.post("https://api.groupme.com/v3/bots/post", {form: { bot_id: botId, text: url } });
 					}
 					// Magic 8 Ball
 					else {
