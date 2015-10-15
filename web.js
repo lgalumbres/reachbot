@@ -75,6 +75,9 @@ app.post('/receiver', function(req, res) {
 	else if (groupId == "7377546") {
 		botId = "76bbaccc18e94074c8f7e3be3d"; // Daves group
 	}
+	else if (groupId == "4990571")  {
+		botId = "089a891826faa805a418024c84"; // Daves other group
+	}
 	
 	if (message) {
 		if (message.toLowerCase() == "i love you reachbot") {
